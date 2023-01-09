@@ -94,12 +94,15 @@ bool mpu6050_init(MPU6050 *sensor, const nrf_drv_twi_t *m_twi)
 
   sensor->mHandle = m_twi;
   sensor->mTransferDone = false;
+  sensor->initialised = false;
 
   //Check the id to confirm that we are communicating with the right device
   if (mpu6050_verify_product_id(sensor) == false)
   {
     return false;
   }
+
+  sensor->initialised = true;
 
   return true;
 }

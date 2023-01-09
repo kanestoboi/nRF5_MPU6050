@@ -66,6 +66,7 @@ typedef struct MPU6050
   const nrf_drv_twi_t *mHandle;
 
   bool mTransferDone;
+  bool initialised;
 } MPU6050;
 
 bool mpu6050_init(MPU6050 *sensor, const nrf_drv_twi_t *m_twi);
