@@ -41,7 +41,6 @@ bool mpu6050_register_read(MPU6050 *sensor, uint8_t register_address, uint8_t * 
     
     // Send the Register address where we want to write the data
     err_code = nrf_drv_twi_tx(sensor->mHandle, MPU6050_ADDRESS, &register_address, 1, true);
-	  
     //Wait for the transmission to get completed
     while (sensor->mTransferDone == false){}
     
@@ -53,7 +52,6 @@ bool mpu6050_register_read(MPU6050 *sensor, uint8_t register_address, uint8_t * 
 
     //set the flag again so that we can read data from the MPU6050's internal register
     sensor->mTransferDone = false;
-	  
     // Receive the data from the MPU6050
     err_code = nrf_drv_twi_rx(sensor->mHandle, MPU6050_ADDRESS, destination, number_of_bytes);
 		
@@ -116,7 +114,7 @@ bool mpu6050_ReadAcc(MPU6050 *sensor, int16_t *pACC_X , int16_t *pACC_Y , int16_
   uint8_t buf[6];
   bool ret = false;
 
-  if(mpu6050_register_read(sensor, MPU6050_ACC_OUT, buf, 6) == true)
+  if(mpu6050_register_read(sensor, MPU6050_ACC_OUT_REG, buf, 6) == true)
   {
     
     *pACC_X = (buf[0] << 8) | buf[1];
@@ -130,5 +128,40 @@ bool mpu6050_ReadAcc(MPU6050 *sensor, int16_t *pACC_X , int16_t *pACC_Y , int16_
   
   
   return ret;
+}
+
+bool mpu6050_SetMotionDetectionThreshold(MPU6050 *sensor, uint8_t threshold)
+{
+  return mpu6050_register_write(sensor, MPU6050_MOT_THR_REG, threshold);
+}
+
+bool mpu6050_EnableInterrupt(MPU6050 *sensor, uint8_t source)
+{
+    return mpu6050_register_write(sensor, MPU6050_INT_EN_REG, source);
+}
+
+bool mpu6050_ConfigureInterruptPin(MPU6050 *sensor, uint8_t configuration)
+{
+    return mpu6050_register_write(sensor, MPU6050_INT_BP_CFG_REG, configuration);
+}
+
+bool mpu6050_SetMotionDetectionDuration(MPU6050 *sensor, uint8_t duration)
+{
+    return mpu6050_register_write(sensor, MPU6050_MOT_DUR_REG, duration);
+}
+
+bool mpu6050_SetAccelerometerPowerOnDelay(MPU6050 *sensor, uint8_t delay)
+{
+	return mpu6050_register_write(sensor, MPU6050_MOT_DETECT_CTRL, (delay << 4) & 0b00110000);
+}
+
+bool mpu6050_SetFreefallDetectionCounterDecrement(MPU6050 *sensor, uint8_t decrement)
+{
+    return mpu6050_register_write(sensor, MPU6050_MOT_DETECT_CTRL, (decrement << 2) & 0b00001100);
+}
+
+bool mpu6050_SetMotionDetectionCounterDecrement(MPU6050 *sensor, uint8_t decrement)
+{
+    return mpu6050_register_write(sensor, MPU6050_MOT_DETECT_CTRL, decrement & 0b00000011);
 }
 
