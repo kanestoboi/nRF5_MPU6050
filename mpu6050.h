@@ -134,9 +134,13 @@ typedef struct MPU6050
 enum MPU6050_INTERRUPT_SOURCE 
 {
         DISABLE_ALL_INTERRUPTS = 0,
+        FF_EN = 0x80,
 	MOT_EN = 0x40U,
+        ZMOT_EN = 0x20,
 	FIFO_OFLOW_EN = 0x10,
 	I2C_MST_INT_EN = 0x08,
+        PLL_RDY_INT = 0x04,
+        DMP_INT = 0x02,
 	DATA_RDY_EN = 0x01
 };
 
