@@ -188,7 +188,7 @@ bool mpu6050_verify_mems_id(MPU6050 *sensor);
 bool mpu6050_verify_part_id(MPU6050 *sensor);
 
 bool mpu6050_ReadAcc(MPU6050 *sensor, int16_t *pACC_X , int16_t *pACC_Y , int16_t *pACC_Z );
-bool mpu6050_ReadTemp(MPU6050 *sensor, uint16_t *pTemp );
+bool mpu6050_ReadTemp(MPU6050 *sensor, int16_t *pTemp );
 bool mpu6050_DataReady(MPU6050 *sensor);
 
 bool mpu6050_SetMotionDetectionThreshold(MPU6050 *sensor, uint8_t threshold);

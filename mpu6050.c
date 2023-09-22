@@ -130,6 +130,26 @@ bool mpu6050_ReadAcc(MPU6050 *sensor, int16_t *pACC_X , int16_t *pACC_Y , int16_
   return ret;
 }
 
+bool mpu6050_ReadTemp(MPU6050 *sensor, int16_t *pTemp )
+{
+  bool ret = false;
+
+  uint8_t TEMP_OUT_H_Value;
+  uint8_t TEMP_OUT_L_Value;
+  if(mpu6050_register_read(sensor, MPU6050_TEMP_OUT_H_REG, &TEMP_OUT_H_Value, 1) == true)
+  { 
+    ret = true;
+  }
+  if(mpu6050_register_read(sensor, MPU6050_TEMP_OUT_L_REG, &TEMP_OUT_L_Value, 1) == true)
+  { 
+    ret = true;
+  }
+  
+  *pTemp = TEMP_OUT_H_Value << 8 | TEMP_OUT_L_Value;
+
+  return ret;
+}
+
 bool mpu6050_SetMotionDetectionThreshold(MPU6050 *sensor, uint8_t threshold)
 {
   return mpu6050_register_write(sensor, MPU6050_MOT_THR_REG, threshold);
